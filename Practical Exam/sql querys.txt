@@ -1,0 +1,128 @@
+-- Create Database
+CREATE DATABASE churn_db;
+
+-- Use Database
+USE churn_db;
+
+-- Create Table
+CREATE TABLE CustomerSubscriptions (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Age INT,
+    Gender VARCHAR(10),
+    SubscriptionType VARCHAR(20),
+    SubscriptionDate DATE,
+    LastLoginDate DATE,
+    TotalSessions INT,
+    FeedbackScore INT,
+    IsChurned INT
+);
+
+-- Insert Data (50 rows)
+INSERT INTO CustomerSubscriptions 
+(CustomerID, Name, Age, Gender, SubscriptionType, SubscriptionDate, LastLoginDate, TotalSessions, FeedbackScore, IsChurned)
+VALUES
+(1,'Rahul',25,'Male','Monthly','2024-01-01','2024-03-01',10,8,0),
+(2,'Priya',30,'Female','Yearly','2023-05-10','2024-02-01',50,9,0),
+(3,'Amit',22,'Male','Monthly','2024-02-15','2024-02-20',3,4,1),
+(4,'Sneha',35,'Female','Quarterly','2023-08-01','2023-10-01',8,6,1),
+(5,'Raj',28,'Male','Monthly','2024-01-20','2024-04-01',15,7,0),
+(6,'Neha',40,'Female','Yearly','2022-12-01','2024-01-15',60,9,0),
+(7,'Karan',19,'Male','Monthly','2024-03-01','2024-03-05',2,3,1),
+(8,'Pooja',27,'Female','Quarterly','2023-09-10','2024-02-20',20,8,0),
+(9,'Arjun',31,'Male','Monthly','2024-01-05','2024-01-10',4,5,1),
+(10,'Meera',29,'Female','Yearly','2023-03-12','2024-03-01',45,9,0),
+(11,'Rohit',33,'Male','Quarterly','2023-10-01','2023-12-15',7,6,1),
+(12,'Simran',26,'Female','Monthly','2024-02-01','2024-02-25',12,7,0),
+(13,'Vikas',38,'Male','Yearly','2022-11-20','2024-01-01',70,10,0),
+(14,'Anjali',24,'Female','Monthly','2024-03-10','2024-03-15',3,4,1),
+(15,'Deepak',42,'Male','Quarterly','2023-07-15','2023-11-01',9,6,1),
+(16,'Riya',21,'Female','Monthly','2024-01-18','2024-02-10',6,5,0),
+(17,'Manish',36,'Male','Yearly','2023-02-01','2024-03-10',55,8,0),
+(18,'Kavita',34,'Female','Quarterly','2023-06-10','2023-12-20',10,7,1),
+(19,'Suresh',45,'Male','Yearly','2022-09-01','2024-02-01',65,9,0),
+(20,'Nikita',23,'Female','Monthly','2024-03-05','2024-03-08',2,3,1),
+(21,'Harsh',28,'Male','Monthly','2024-02-20','2024-03-01',8,6,0),
+(22,'Isha',32,'Female','Yearly','2023-01-10','2024-02-15',48,9,0),
+(23,'Tarun',27,'Male','Quarterly','2023-08-05','2023-10-10',5,5,1),
+(24,'Divya',30,'Female','Monthly','2024-01-25','2024-03-05',14,8,0),
+(25,'Akash',37,'Male','Yearly','2022-10-10','2024-01-20',75,10,0),
+(26,'Ramesh',41,'Male','Monthly','2024-02-10','2024-02-20',6,5,1),
+(27,'Seema',29,'Female','Quarterly','2023-09-01','2024-01-01',18,7,0),
+(28,'Ashok',34,'Male','Yearly','2023-01-01','2024-02-10',52,9,0),
+(29,'Kiran',26,'Female','Monthly','2024-03-01','2024-03-02',2,4,1),
+(30,'Sunil',39,'Male','Quarterly','2023-06-01','2023-12-01',11,6,1),
+(31,'Ankit',23,'Male','Monthly','2024-01-10','2024-02-15',9,7,0),
+(32,'Pallavi',31,'Female','Yearly','2023-04-01','2024-03-01',47,9,0),
+(33,'Ravi',35,'Male','Quarterly','2023-07-01','2023-11-15',10,6,1),
+(34,'Nisha',28,'Female','Monthly','2024-02-05','2024-03-01',13,8,0),
+(35,'Varun',42,'Male','Yearly','2022-08-01','2024-01-10',68,10,0),
+(36,'Tina',24,'Female','Monthly','2024-03-05','2024-03-06',1,3,1),
+(37,'Ajay',33,'Male','Quarterly','2023-09-15','2023-12-20',7,5,1),
+(38,'Komal',27,'Female','Yearly','2023-02-20','2024-02-25',49,9,0),
+(39,'Sachin',36,'Male','Monthly','2024-01-15','2024-03-01',16,8,0),
+(40,'Rekha',30,'Female','Quarterly','2023-08-10','2023-11-10',12,7,0),
+(41,'Deepika',22,'Female','Monthly','2024-03-08','2024-03-09',2,4,1),
+(42,'Mahesh',44,'Male','Yearly','2022-07-01','2024-01-01',72,10,0),
+(43,'Yogesh',38,'Male','Quarterly','2023-05-01','2023-10-01',9,6,1),
+(44,'Shreya',25,'Female','Monthly','2024-02-01','2024-03-05',11,7,0),
+(45,'Rajesh',41,'Male','Yearly','2023-01-15','2024-02-01',58,9,0),
+(46,'Payal',29,'Female','Quarterly','2023-06-20','2023-12-15',13,7,0),
+(47,'Nitin',34,'Male','Monthly','2024-01-05','2024-02-25',14,8,0),
+(48,'Swati',32,'Female','Yearly','2023-03-10','2024-02-20',46,9,0),
+(49,'Imran',37,'Male','Quarterly','2023-07-10','2023-11-25',8,6,1),
+(50,'Heena',26,'Female','Monthly','2024-03-01','2024-03-03',3,4,1);
+
+-- QUERY 1: Active vs Churned Customers
+SELECT 
+    SubscriptionType,
+    SUM(CASE WHEN IsChurned = 0 THEN 1 ELSE 0 END) AS Active_Customers,
+    SUM(CASE WHEN IsChurned = 1 THEN 1 ELSE 0 END) AS Churned_Customers
+FROM CustomerSubscriptions
+GROUP BY SubscriptionType;
+
+-- QUERY 2: Avg Feedback
+SELECT 
+    SubscriptionType,
+    Gender,
+    AVG(FeedbackScore) AS Avg_Feedback
+FROM CustomerSubscriptions
+GROUP BY SubscriptionType, Gender;
+
+-- QUERY 3: Low Engagement
+SELECT *
+FROM CustomerSubscriptions
+WHERE TotalSessions < 5 AND FeedbackScore < 5;
+
+-- QUERY 4: Inactive Users
+SELECT *
+FROM CustomerSubscriptions
+WHERE DATEDIFF(CURDATE(), LastLoginDate) > 60;
+
+-- QUERY 5: Churn Rate
+SELECT 
+    SubscriptionType,
+    COUNT(*) AS Total,
+    SUM(IsChurned) AS Churned,
+    (SUM(IsChurned) / COUNT(*)) * 100 AS Churn_Rate
+FROM CustomerSubscriptions
+GROUP BY SubscriptionType;
+
+-- QUERY 6: Longest Subscription
+SELECT *
+FROM CustomerSubscriptions
+ORDER BY SubscriptionDate ASC
+LIMIT 10;
+
+-- QUERY 7: Age Group Churn
+SELECT 
+    CASE 
+        WHEN Age BETWEEN 18 AND 25 THEN '18-25'
+        WHEN Age BETWEEN 26 AND 35 THEN '26-35'
+        WHEN Age BETWEEN 36 AND 50 THEN '36-50'
+        ELSE '50+'
+    END AS Age_Group,
+    COUNT(*) AS Total,
+    SUM(IsChurned) AS Churned
+FROM CustomerSubscriptions
+GROUP BY Age_Group;
